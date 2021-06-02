@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import Logo from "../public/static/svg/logo.svg";
 import SearchIcon from "../public/static/svg/search.svg";
-import LogoTextIcon from "../public/static/svg/logoText.svg";
-import HamburgerIcon from "../public/static/svg/hamburgerIcon.svg";
-import ProfileImg from "../public/static/svg/profileImg.svg";
 import palette from "../styles/palette";
-import SignUpModal from "./auth/SignUpModal";
 import useModal from "../hooks/useModal";
+import HeaderAuths from "./HeaderAuths";
+import HeaderUserProfile from "./HeaderUserProfile";
 
 const Container = styled.div`
 
@@ -23,20 +20,31 @@ const Container = styled.div`
     background-color: white;
     box-shadow: rgba(0,0,0,0.08)0px 1px 12px;
     z-index: 10;
-    
-    
-    .header-logo-wrapper{
+
+/** react-outside-click-handler div입니다 */
+    .header-logo-wrapper + div{
+      position: relative;
+    }
+
+
+    .header-logo{
+
+    & .header-logo-wrapper{
         display: flex;
         align-items: center;
-
-        .header-logo{
-            margin-right: 6px;
+        overflow: hidden;
+        
+            & img{
+              width: 130px;
+              height: 110px;
+              display: block;
+            }
         }
     }
 
     .header-list-wrapper{
         display: flex;
-
+        justify-content: center;
         & ul{
             display: flex;
             align-items: center;
@@ -44,7 +52,7 @@ const Container = styled.div`
             & li{
                 padding :10px 0 0 0;
                 margin : 0 30px;
-                font-size: 20px;
+                font-size: 16px;
                 font-weight: 500;
                 cursor: pointer;
 
@@ -59,6 +67,7 @@ const Container = styled.div`
 
     /*로그인 회원가입 */
     .header-auth-buttons{
+
         .header-sign-up-button{
             height: 42px;
             margin-right:8px;
@@ -91,7 +100,8 @@ const Container = styled.div`
     .header-user-profile{
         display: flex;
         align-items: center;
-        height: 42px;
+        margin-top: 10px;
+        height: 50px;
         border : 0;
         box-shadow: 0px 1px 2px rgba(0,0,0,0.18);
         border-radius: 21px;
@@ -109,19 +119,35 @@ const Container = styled.div`
             border-radius: 50%;
         }
     }
+
+    .header-usermenu{
+      position:absolute;
+      right: 0;
+      top:52px;
+      width:240px;
+      padding: 8px 0;
+    
+
+    }
+
+
 `;
 
 const Header: React.FC = () => {
-  const { openModal, ModalPortal } = useModal();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+
   return (
     <Container>
-      <Link href="/">
-        <a className="header-logo-wrapper">
-          <Logo className="header-logo" />
-          <LogoTextIcon />
-        </a>
-      </Link>
+      <div className="header-logo">
+        <Link href="/">
+          <a className="header-logo-wrapper">
+            {/* <Logo className="header-logo" /> */}
+            <img src="/static/png/fullLogo2.png" alt="" />
+            {/* <img src="/static/png/logoTitile.png" alt="" width="40%" /> */}
+            {/* <LogoTextIcon /> */}
+          </a>
+        </Link>
+      </div>
 
       <div className="header-list-wrapper">
         <ul>
@@ -140,35 +166,11 @@ const Header: React.FC = () => {
               <span>Q &amp; A</span>
             </div>
           </li>
+          {!isLoggedIn && <HeaderAuths />}
+          {isLoggedIn && <HeaderUserProfile />}
         </ul>
-        {!isLoggedIn && (
-        <div className="header-auth-buttons">
-          <button type="button" className="header-sign-up-button" onClick={openModal}>
-            회원가입
-          </button>
-          <button type="button" className="header-login-buton">
-            로그인
-          </button>
-        </div>
-        )}
-        {isLoggedIn && (
-        <button className="header-user-profile" type="button">
-          <HamburgerIcon />
-
-          {/* 나중에 밑에 Img태그로 대체 */}
-          <ProfileImg className="header-user-profile-image" />
-          <img
-            src=""
-            className=""
-            alt=""
-          />
-        </button>
-        )}
       </div>
-      {/* 모달 */}
-      <ModalPortal>
-        <SignUpModal />
-      </ModalPortal>
+
     </Container>
   );
 };
