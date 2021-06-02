@@ -21,10 +21,6 @@ const Container = styled.div`
     box-shadow: rgba(0,0,0,0.08)0px 1px 12px;
     z-index: 10;
 
-/** react-outside-click-handler div입니다 */
-    .header-logo-wrapper + div{
-      position: relative;
-    }
 
 
     .header-logo{
@@ -43,13 +39,12 @@ const Container = styled.div`
     }
 
     .header-list-wrapper{
-        display: flex;
-        justify-content: center;
+        
         & ul{
-            display: flex;
-            align-items: center;
-           
-            & li{
+           display: flex;
+           align-items: center;
+
+            & li{   
                 padding :10px 0 0 0;
                 margin : 0 30px;
                 font-size: 16px;
@@ -100,7 +95,6 @@ const Container = styled.div`
     .header-user-profile{
         display: flex;
         align-items: center;
-        margin-top: 10px;
         height: 50px;
         border : 0;
         box-shadow: 0px 1px 2px rgba(0,0,0,0.18);
@@ -120,15 +114,50 @@ const Container = styled.div`
         }
     }
 
-    .header-usermenu{
-      position:absolute;
-      right: 0;
-      top:52px;
-      width:240px;
-      padding: 8px 0;
-    
 
+
+/** react-outside-click-handler div에는 className을 줄 수 없어서
+    인접 요소 OR Q & A 다음 오는 div를 선택해야합니다.
+ */
+    .outside-click-div + div{
+      position:relative;
     }
+
+    .header-usermenu{
+      display: flex;
+      flex-direction: column;
+
+      position:absolute;
+      right: 30px;
+      top:80px;
+      width:200px;
+      padding: 8px 0;
+      box-shadow:0 2px 16px rgba(0,0,0,0.12);
+      border-radius : 8px;
+      background-color: white;
+
+        li{
+          display: flex;
+          flex-direction: column !important;
+          align-items: center;
+          width: 100%;
+          height: 42px;
+          padding : 0 16px;
+          cursor: pointer;
+
+          &:hover{
+            background-color: ${palette.gray_f7};
+          }
+        }
+
+        .header-usermenu-divider {
+          width: 100%;
+          height: 1px;
+          margin: 8px 0;
+          background-color: ${palette.gray_dd};
+        }
+    }
+
 
 
 `;
@@ -150,7 +179,7 @@ const Header: React.FC = () => {
       </div>
 
       <div className="header-list-wrapper">
-        <ul>
+        <ul className="header-list-main-menu">
           <li>
             <div>
               <SearchIcon />
@@ -162,7 +191,7 @@ const Header: React.FC = () => {
             </div>
           </li>
           <li>
-            <div>
+            <div className="outside-click-div">
               <span>Q &amp; A</span>
             </div>
           </li>

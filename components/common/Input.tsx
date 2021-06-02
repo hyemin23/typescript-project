@@ -41,4 +41,4 @@ const Input: React.FC<IProps> = ({ icon, ...props }) => {
   );
 };
 
-export default Input;
+export default React.memo(Input);
